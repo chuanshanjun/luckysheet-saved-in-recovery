@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" /> 
+        <link rel='stylesheet' href='./luckysheet/pluginsCss.css' />
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet/dist/plugins/plugins.css' />
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet/dist/css/luckysheet.css' />
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet/dist/assets/iconfont/iconfont.css' />
+        <script src="https://cdn.jsdelivr.net/npm/luckysheet/dist/plugins/js/plugin.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/luckysheet/dist/luckysheet.umd.js"></script>
+        <script src="./data/luckysheetfile.js"></script>
+    </head>
+    <body>
+        <p style="text-align:center;">
+            <input style="font-size:16px;" type="file" id="Luckyexcel-demo-file"
+                name="Luckyexcel-demo-file" change="demoHandler" /> 
+            <button> 导入 </button> 
+            <button onclick="init()"> init </button> 
+            <button onclick="load()"> load </button> 
+            <button onclick="save()"> save </button>  
+        </p>
+        <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;left: 0px;top: 50px;bottom: 0px;">
+        </div>
+    </body>
+
+    <script>
+        function init() {
+            luckysheet.destroy()
+            var options = {
+                title: 'TD游戏配置',
+                lang: 'zh',
+                container: 'luckysheet'
+            }
+    
+            options.data = [
+                {
+                    name: 'test',
+                    index: '0',
+                    column: 5,
+                    row: 5,
+                    celldata: [
+                        {
+                            "r": 0,
+                            "c": 0,
+                            "v": {
+                                "bg": null,
+                                "bl": 0,
+                                "it": 0,
+                                "ff": 0,
+                                "fs": 11,
+                                "fc": "rgb(51, 51, 51)",
+                                "ht": 1,
+                                "vt": 1,
+                                "v": 123,
+                                "ct": {
+                                    "fa": "General",
+                                    "t": "n"
+                                },
+                                "m": "1"
+                            }
+                        },
+                        {
+                            "r": 1,
+                            "c": 1,
+                            "v": {
+                                "bg": null,
+                                "bl": 0,
+                                "it": 0,
+                                "ff": 0,
+                                "fs": 11,
+                                "fc": "rgb(51, 51, 51)",
+                                "ht": 1,
+                                "vt": 1,
+                                "v": 123,
+                                "ct": {
+                                    "fa": "General",
+                                    "t": "n"
+                                },
+                                "m": "1"
+                            }
+                        }
+                    ]
+                }
+            ]
+    
+            luckysheet.create(options)
+            console.log("init...")
+        }
+    
+    
+        function load() {
+            luckysheet.destroy()
+            var opt = localStorage.getItem('options');
+            if (!opt) opt = {}
+            else opt = JSON.parse(opt)
+            luckysheet.create(opt)
+            console.log("恢复成功")
+        }
+    
+        function save() {
+            var options = {
+                title: 'TD游戏配置',
+                lang: 'zh',
+                container: 'luckysheet',
+                data: [],
+            }
+    
+            var luckysheetfile = luckysheet.getLuckysheetfile()
+            for (const index in luckysheetfile) {
+                var sheet = luckysheetfile[index]
+                options.data[index] = {
+                    name: sheet.name,
+                    index: index,
+                    column: sheet.data[0].length,
+                    row: sheet.data.length,
+                }
+    
+                options.data[index].celldata = []
+                var i = 0;
+                for (const r in sheet.data) {
+                    for (const c in sheet.data[r]) {
+                        options.data[index].celldata[i++] = {
+                            r: r,
+                            c: c,
+                            v: sheet.data[r][c]
+                        }
+                    }
+                }
+            }
+    
+            localStorage.setItem('options', JSON.stringify(options))
+            console.log("同步成功")
+        }
+    </script>
+</html>
