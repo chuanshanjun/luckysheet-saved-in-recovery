@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head lang='zh'>
+	<meta charset='utf-8'>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="renderer" content="webkit" />
+	<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=0" />
+	<title>web-excel--luckysheet</title>
+
+	<link rel='stylesheet' href='./lib/plugins/css/pluginsCss.css' />
+	<link rel='stylesheet' href='./lib/plugins/plugins.css' />
+	<link rel='stylesheet' href='./lib/css/luckysheet.css' />
+	<link rel='stylesheet' href='./lib/assets/iconfont/iconfont.css' />
+	<script src="./lib/plugins/js/plugin.js"></script>
+	<script src="./lib/luckysheet.umd.js"></script>
+</head>
+
+<body>
+	<div>
+		<div style="float: left;">
+			<button onclick="load()">加载</button>
+			<button onclick="save()">保存</button>
+			<time>18:03</time>
+			<span> : </span>
+			<span> notice </span>
+		</div>
+
+		<div style="float: right;">
+			<input style="font-size:16px;" type="file" id="Luckyexcel-demo-file" name="Luckyexcel-demo-file"
+				change="demoHandler" />
+			<button> 导入 </button>
+			<button> 导出 </button>
+		</div>
+	</div>
+	<div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;left: 0px;top: 50px;bottom: 0px;">
+	</div>
+</body>
+<script src="index.js"></script>
+</html>
