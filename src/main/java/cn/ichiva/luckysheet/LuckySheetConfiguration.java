@@ -1,9 +1,8 @@
 package cn.ichiva.luckysheet;
 
+import cn.ichiva.luckysheet.utils.StringDb;
 import lombok.extern.slf4j.Slf4j;
-import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
-import org.iq80.leveldb.impl.DbImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,7 +24,7 @@ public class LuckySheetConfiguration {
 
     //为了简化部署,这里使用嵌入式kv数据库
     @Bean
-    public DB getLeveDB() throws IOException {
-        return new DbImpl(new Options(),new File("./data"));
+    public StringDb getLeveDB() throws IOException {
+        return new StringDb(new Options(),new File("./data"));
     }
 }
