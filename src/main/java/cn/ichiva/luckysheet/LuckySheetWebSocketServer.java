@@ -14,11 +14,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
-public class LuckySheetServer extends WebSocketServer {
+public class LuckySheetWebSocketServer extends WebSocketServer {
 
     Set<WebSocket> set = new HashSet<>();
 
-    public LuckySheetServer(int port){
+    public LuckySheetWebSocketServer(int port){
         super(new InetSocketAddress(port));
     }
 
