@@ -10,4 +10,7 @@ http://ichiva.cn:11427/
 ## 直接运行 Application 启动程序
 ## 静态资源 src\main\resources\static
 
+## 分支说明:
+### dev-server 实现了一个最简单的协同编辑
+
 
