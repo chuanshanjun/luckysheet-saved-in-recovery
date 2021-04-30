@@ -1,18 +1,12 @@
 package cn.ichiva.luckysheet;
 
-import cn.ichiva.luckysheet.utils.StringDb;
 import lombok.extern.slf4j.Slf4j;
+import org.iq80.leveldb.DB;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @CrossOrigin
@@ -20,35 +14,24 @@ import java.util.List;
 public class LuckySheetController {
 
     @Autowired
-    StringDb db;
-
-    String ACCOUNT_KEY = "account:%s:%s";
-    String FILE_KEY = "file:%s:%s";
-    @RequestMapping("/login")
-    public Object login(String uname,String pwd){
-        String key = getKey(uname,pwd);
-        List<String> list = (List)db.getObject(key);
-        if(list == null) {
-            list = new ArrayList<>();
-        }
-        return list;
-    }
-
-    private String getKey(String uname, String pwd) {
-        return String.format(ACCOUNT_KEY,uname,pwd);
-    }
+    DB db;
 
 
     @GetMapping("/version")
     public Object version(){
-        return new Object(){ public String version = "v0.0.2"; };
+        return new Object(){ public String version = "v0.0.3"; };
     }
 
-
-    @RequestMapping("/load")
-    public Object load() throws IOException {
-        byte[] bytes = Files.readAllBytes(Paths.get("./def.json"));
-        return new String(bytes);
+    //取文件
+    @RequestMapping("/get")
+    public Object get() throws IOException {
+        return new String(db.get(Keys.FILE), StandardCharsets.UTF_8);
     }
 
+    //设置文件
+    @PostMapping("/set")
+    public Object set(String jsonExcel) throws IOException {
+        db.put(Keys.FILE,jsonExcel.getBytes(StandardCharsets.UTF_8));
+        return true;
+    }
 }

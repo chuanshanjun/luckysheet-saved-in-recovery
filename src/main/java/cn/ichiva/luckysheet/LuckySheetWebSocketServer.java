@@ -11,29 +11,30 @@ import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class LuckySheetWebSocketServer extends WebSocketServer {
 
-    Set<WebSocket> set = new HashSet<>();
+    Map<WebSocket,String> connMap = new ConcurrentHashMap<>();
 
     public LuckySheetWebSocketServer(int port){
         super(new InetSocketAddress(port));
     }
 
-    JSONObject json = JSON.parseObject("{\"t\":\"v\",\"i\":\"sheet_01\",\"v\":{\"v\":123,\"ct\":{\"fa\":\"General\",\"t\":\"n\"},\"m\":\"0\"},\"r\":0,\"c\":0}");
-    int n = 0;
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
+
         set.add(conn);
-        log.info("conn n = {}",++n);
+        log.info("conn n = {}",set.size());
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         set.remove(conn);
-        log.info("disConn n = {}",--n);
+        log.info("disConn n = {}",set.size());
     }
 
     @Override

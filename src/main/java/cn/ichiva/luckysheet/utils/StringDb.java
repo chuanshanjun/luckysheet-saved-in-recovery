@@ -1,12 +1,14 @@
 package cn.ichiva.luckysheet.utils;
 
-import org.iq80.leveldb.DBException;
 import org.iq80.leveldb.Options;
 import org.iq80.leveldb.impl.DbImpl;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Level db 支持 String key
+ */
 public class StringDb extends DbImpl {
 
     public StringDb(Options options, File databaseDir) throws IOException {
@@ -48,7 +50,6 @@ public class StringDb extends DbImpl {
         public DBException(Throwable e){
             super(e);
         }
-
         public DBException(String msg){
             super(msg);
         }
