@@ -28,7 +28,6 @@
           <artifactId>Java-WebSocket</artifactId>
           <version>1.4.1</version>
         </dependency>
-
         <dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
