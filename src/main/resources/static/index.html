@@ -20,7 +20,7 @@
         var options = {
             container: 'luckysheet',
             allowUpdate: true,
-            loadUrl:"http://localhost:11427/get",
+            loadUrl:"http://"+ location.host +"/get",
             hook:{
                 updated:function(e){
                     //监听更新,并在3s后自动保存
@@ -31,7 +31,7 @@
                         //去除临时数据,减小体积
                         for(var i in excel) excel[i].data = undefined
                         $.post(
-                            "http://localhost:11427/set",
+                            "http://" + location.host + "/set",
                             {jsonExcel:JSON.stringify(excel)},
                             function(){
                                 $(luckysheet_info_detail_save).text("已保存")
@@ -40,7 +40,7 @@
                     return true;
                 }
             },
-            updateUrl: "ws://localhost:11551?name=" + name
+            updateUrl: "ws://" + location.hostname +":11551?name=" + name
         }
 
         console.log(JSON.stringify(options))

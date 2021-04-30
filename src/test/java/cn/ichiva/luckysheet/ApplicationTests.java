@@ -1,4 +1,4 @@
-package cn.ichiva;
+package cn.ichiva.luckysheet;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

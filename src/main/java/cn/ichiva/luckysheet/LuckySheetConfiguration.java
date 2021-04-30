@@ -11,6 +11,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -20,6 +21,9 @@ public class LuckySheetConfiguration {
 
     @Value("${ws.port:11551}")
     int port;
+
+    @Value("${def}")
+    String defExcel;
 
     //启动ws服务
     @Bean
@@ -37,8 +41,7 @@ public class LuckySheetConfiguration {
 
         //初始化文档
         if(db.get(Keys.FILE) == null){
-            Path path = ResourceUtils.getFile("classpath:def.json").toPath();
-            db.put(Keys.FILE, Files.readAllBytes(path));
+            db.put(Keys.FILE, defExcel.getBytes(StandardCharsets.UTF_8));
         }
         return db;
     }
