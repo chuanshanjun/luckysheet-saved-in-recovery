@@ -9,6 +9,11 @@
 <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;height:100%;left: 0px;top: 0px;"></div>
 <script>
     $(function () {
+        var name = "";
+        while(name.length == 0){
+            name = prompt("请输入昵称")
+        }
+
         var autoSave;
         //配置项
         var options = {
@@ -29,7 +34,7 @@
                     return true;
                 }
             },
-            updateUrl: "ws://localhost:11551"
+            updateUrl: "ws://localhost:11551?name=" + name
         }
 
         console.log(JSON.stringify(options))

@@ -12,10 +12,7 @@ import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Slf4j
 public class LuckySheetWebSocketServer extends WebSocketServer {
@@ -55,7 +52,9 @@ public class LuckySheetWebSocketServer extends WebSocketServer {
 
                 JSONObject jsonObject = JSON.parseObject(unMessage);
                 //广播
-                connMap.forEach((socket,name) -> {
+                String resource = conn.getResourceDescriptor();
+                String name = HttpUtils.getParameter(resource, "name");
+                connMap.forEach((socket,n) -> {
                     if(conn == socket) return;
 
                     if ("mv".equals(jsonObject.getString("t"))) {
