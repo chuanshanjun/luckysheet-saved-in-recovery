@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta charset="utf-8">
 <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/css/pluginsCss.css' />
 <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/plugins.css' />
 <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/css/luckysheet.css' />
@@ -24,12 +25,17 @@
                 updated:function(e){
                     //监听更新,并在3s后自动保存
                     if(autoSave) clearTimeout(autoSave)
-                    console.log("setTimeout 3000")
+                    $(luckysheet_info_detail_save).text("已修改")
                     autoSave = setTimeout(function(){
                         var excel = luckysheet.getAllSheets();
                         //去除临时数据,减小体积
                         for(var i in excel) excel[i].data = undefined
-                        $.post("http://localhost:11427/set",{jsonExcel:JSON.stringify(excel)})
+                        $.post(
+                            "http://localhost:11427/set",
+                            {jsonExcel:JSON.stringify(excel)},
+                            function(){
+                                $(luckysheet_info_detail_save).text("已保存")
+                            })
                     },3 * 1000)
                     return true;
                 }
