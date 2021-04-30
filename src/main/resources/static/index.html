@@ -9,11 +9,26 @@
 <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;height:100%;left: 0px;top: 0px;"></div>
 <script>
     $(function () {
+        var autoSave;
         //配置项
         var options = {
             container: 'luckysheet',
             allowUpdate: true,
             loadUrl:"http://localhost:11427/get",
+            hook:{
+                updated:function(e){
+                    //监听更新,并在3s后自动保存
+                    if(autoSave) clearTimeout(autoSave)
+                    console.log("setTimeout 3000")
+                    autoSave = setTimeout(function(){
+                        var excel = luckysheet.getAllSheets();
+                        //去除临时数据,减小体积
+                        for(var i in excel) excel[i].data = undefined
+                        $.post("http://localhost:11427/set",{jsonExcel:JSON.stringify(excel)})
+                    },3 * 1000)
+                    return true;
+                }
+            },
             updateUrl: "ws://localhost:11551"
         }
 

@@ -1,5 +1,6 @@
 package cn.ichiva.luckysheet;
 
+import cn.ichiva.luckysheet.utils.HttpUtils;
 import cn.ichiva.luckysheet.utils.PakoGzipUtils;
 import cn.ichiva.luckysheet.utils.ResponseDTO;
 import com.alibaba.fastjson.JSON;
@@ -10,31 +11,36 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 public class LuckySheetWebSocketServer extends WebSocketServer {
-
+    //存储连接及昵称
     Map<WebSocket,String> connMap = new ConcurrentHashMap<>();
 
     public LuckySheetWebSocketServer(int port){
         super(new InetSocketAddress(port));
     }
 
+    int n = 0;
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
+        String resource = conn.getResourceDescriptor();
+        String name = HttpUtils.getParameter(resource, "name");
+        if(name == null) name = "" + n++;
+        connMap.put(conn,name);
+        log.info("{} 加入,在线人数 = {}",name,connMap.size());
 
-        set.add(conn);
-        log.info("conn n = {}",set.size());
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        set.remove(conn);
-        log.info("disConn n = {}",set.size());
+        String name = connMap.remove(conn);
+        log.info("{} 离开",name);
     }
 
     @Override
@@ -45,19 +51,19 @@ public class LuckySheetWebSocketServer extends WebSocketServer {
                     return;
                 }
                 String unMessage = PakoGzipUtils.unCompressURI(message);
-                log.info("==>" + unMessage);
-                JSONObject jsonObject = JSON.parseObject(unMessage);
+                if(log.isTraceEnabled()) log.trace(unMessage);
 
+                JSONObject jsonObject = JSON.parseObject(unMessage);
                 //广播
-                for (WebSocket socket : set) {
-                    if(conn == socket) continue;
+                connMap.forEach((socket,name) -> {
+                    if(conn == socket) return;
 
                     if ("mv".equals(jsonObject.getString("t"))) {
-                        socket.send(JSON.toJSONString(new ResponseDTO(3, "0", "0", unMessage)));
+                        socket.send(JSON.toJSONString(new ResponseDTO(3, name, name, unMessage)));
                     }else if(!"shs".equals(jsonObject.getString("t"))){
-                        socket.send(JSON.toJSONString(new ResponseDTO(2, "0", "0", unMessage)));
+                        socket.send(JSON.toJSONString(new ResponseDTO(2, name, name, unMessage)));
                     }
-                }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
