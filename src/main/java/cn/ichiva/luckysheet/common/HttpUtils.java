@@ -45,4 +45,9 @@ public class HttpUtils {
         return null;
     }
 
+    /**
+     *       String resource = webSocket.getResourceDescriptor();
+     *         String uname = HttpUtils.getParameter(resource, "uname");
+     *         String pwd = HttpUtils.getParameter(resource, "pwd");
+     */
 }
