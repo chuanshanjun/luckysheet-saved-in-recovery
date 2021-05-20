@@ -14,6 +14,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalTime;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Configuration
@@ -43,6 +48,14 @@ public class LuckySheetConfiguration {
         if(db.get(Keys.FILE) == null){
             db.put(Keys.FILE, defExcel.getBytes(StandardCharsets.UTF_8));
         }
+
+        //每天0点重置Excel文件
+        Executors.newSingleThreadScheduledExecutor()
+                .scheduleAtFixedRate(() ->
+                        db.put(Keys.FILE, defExcel.getBytes(StandardCharsets.UTF_8)),
+                        24 - LocalTime.now().getHour(),
+                        24,
+                        TimeUnit.HOURS);
         return db;
     }
 }

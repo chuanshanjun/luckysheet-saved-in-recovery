@@ -1,4 +1,4 @@
-def: '[{"name":"Cell","index":"sheet_01","order":0,"status":1,"celldata":[{"r":0,"c":0,"v":{"v":1,"m":"1","ct":{"fa":"General","t":"n"}}}]},{"name":"Data","index":"sheet_02","order":1,"status":0},{"name":"Picture","index":"sheet_03","order":2,"status":0}]'
+def: '[{"name":"Cell","celldata":[{"r":0,"c":0,"v":{"v":"广告","m":"广告","ct":{"fa":"General","t":"g"},"fc":"#ff0000","bg":"#00ff00"}},{"r":0,"c":1,"v":{"m":"接各种项目","ct":{"fa":"General","t":"g"},"v":"接各种项目"}},{"r":0,"c":2,"v":{"m":"QQ:","ct":{"fa":"General","t":"g"},"v":"QQ:"}},{"r":0,"c":3,"v":{"v":874460517,"ct":{"fa":"General","t":"n"},"m":"874460517"}},{"r":0,"c":4,"v":{"v":"长期有限 ","ct":{"fa":"General","t":"g"},"m":"长期有限 "}}]}]'
 server:
   port: 11427
 
