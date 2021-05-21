@@ -46,16 +46,22 @@ public class LuckySheetConfiguration {
 
         //初始化文档
         if(db.get(Keys.FILE) == null){
-            db.put(Keys.FILE, defExcel.getBytes(StandardCharsets.UTF_8));
+            init(db);
         }
 
         //每天0点重置Excel文件
         Executors.newSingleThreadScheduledExecutor()
-                .scheduleAtFixedRate(() ->
-                        db.put(Keys.FILE, defExcel.getBytes(StandardCharsets.UTF_8)),
+                .scheduleAtFixedRate(() -> init(db),
                         24 - LocalTime.now().getHour(),
                         24,
                         TimeUnit.HOURS);
         return db;
     }
+
+    private void init(DbImpl db) {
+        db.put(Keys.FILE, defExcel.getBytes(StandardCharsets.UTF_8));
+        log.info("excel init");
+    }
+
+
 }
