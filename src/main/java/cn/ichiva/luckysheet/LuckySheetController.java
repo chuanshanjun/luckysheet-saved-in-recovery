@@ -124,6 +124,9 @@ public class LuckySheetController {
     public boolean download(@PathParam("filename") String filename, HttpServletResponse response) {
         File f = new File("./tmp/" + filename);
         if (f.exists()) {
+            response.setHeader("Content-Type", "application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=\""+filename+"\"");
+
             try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f));) {
                 byte[] buff = new byte[1024];
                 OutputStream os  = response.getOutputStream();
