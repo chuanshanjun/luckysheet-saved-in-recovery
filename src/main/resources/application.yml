@@ -5,3 +5,5 @@ server:
 ws:
   port: 11551
 
+website: "115.159.34.56"
+
